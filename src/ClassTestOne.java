@@ -21,12 +21,12 @@ public class ClassTestOne {
     }
 
     @AfterSuite
-    private void testAfter() {
+    public void testAfter() {
         System.out.println("After Suite");
     }
 
     @BeforeSuite
-    private void testBefore() {
+    public void testBefore() {
         System.out.println("Before Suite");
     }
 

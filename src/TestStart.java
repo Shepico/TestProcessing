@@ -1,26 +1,21 @@
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-
 import java.util.*;
 
 
 public class TestStart {
-
-    //static TreeMap<Integer, Method> listTest = new TreeMap<>();
+    //Для сортировки методов test
     static HashMap<Integer, ArrayList<Method>> listTest = new HashMap<>();
 
 
     public static  void start(Class myClass) {
+        ArrayList<Method> m = annoBeforeCheck(myClass);
+        ArrayList<Method> m2 = annoAfterCheck(myClass);
+        annoBeforeSuite(myClass, m);
         annoTestSort(myClass);
         annoTestExecute(myClass);
-
-
+        annoAfterSuite(myClass, m2);
     }
-
+    //Перезагрузка по строке
     public static  void start(String nameClass) {
         Class myClass = null;
         try {
@@ -28,8 +23,88 @@ public class TestStart {
         }catch (ClassNotFoundException e){
             e.printStackTrace();
         }
+        ArrayList<Method> m = annoBeforeCheck(myClass);
+        ArrayList<Method> m2 = annoAfterCheck(myClass);
+        annoBeforeSuite(myClass, m);
         annoTestSort(myClass);
         annoTestExecute(myClass);
+        annoAfterSuite(myClass, m2);
+    }
+////////////////////////////////////////////////////////////////////////////////////
+    private static ArrayList<Method> annoAfterCheck(Class myClass) {
+        AfterSuite annoAfter;
+        Method[] methods = myClass.getDeclaredMethods();
+        ArrayList<Method> method = new ArrayList<>();
+        for (Method o : methods) {
+
+            annoAfter = o.getAnnotation(AfterSuite.class);
+            if (annoAfter != null) {
+                method.add(o);
+            }
+
+        }
+        //если больше одного, то Exception
+        if (method.size() > 1) {
+            throw new RuntimeException();
+        }
+        //
+        return method;
+    }
+
+    private static <myClass> void annoAfterSuite(Class myClass, ArrayList<Method> method) {
+
+        myClass objClass = null;
+        try {
+            objClass = (myClass) myClass.newInstance();
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        Method m = method.get(0);
+        m.setAccessible(true); // если метод private
+        try {
+            m.invoke(objClass);
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    private static ArrayList<Method> annoBeforeCheck(Class myClass) {
+        BeforeSuite annoBefore;
+        Method[] methods = myClass.getDeclaredMethods();
+        ArrayList<Method> method = new ArrayList<>();
+        for (Method o : methods) {
+
+            annoBefore = o.getAnnotation(BeforeSuite.class);
+            if (annoBefore != null) {
+                method.add(o);
+            }
+
+        }
+        //если больше одного, то Exception
+        if (method.size() > 1) {
+            throw new RuntimeException();
+        }
+
+        return method;
+    }
+
+    private static <myClass> void annoBeforeSuite(Class myClass, ArrayList<Method> method) {
+        //
+        myClass objClass = null;
+        try {
+            objClass = (myClass) myClass.newInstance();
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        Method m = method.get(0);
+        m.setAccessible(true); // если метод private
+        try {
+            m.invoke(objClass);
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     private static void annoTestSort(Class myClass) {
