@@ -3,7 +3,7 @@ import java.util.*;
 
 
 public class TestStart {
-    //Для сортировки методов test
+    //Для сортировки методов Test
     static HashMap<Integer, ArrayList<Method>> listTest = new HashMap<>();
 
 
@@ -31,6 +31,7 @@ public class TestStart {
         annoAfterSuite(myClass, m2);
     }
 ////////////////////////////////////////////////////////////////////////////////////
+    //проверка After
     private static ArrayList<Method> annoAfterCheck(Class myClass) {
         AfterSuite annoAfter;
         Method[] methods = myClass.getDeclaredMethods();
@@ -50,7 +51,7 @@ public class TestStart {
         //
         return method;
     }
-
+    //Выполнение After
     private static <myClass> void annoAfterSuite(Class myClass, ArrayList<Method> method) {
 
         myClass objClass = null;
@@ -69,6 +70,8 @@ public class TestStart {
 
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //Проверка Before
     private static ArrayList<Method> annoBeforeCheck(Class myClass) {
         BeforeSuite annoBefore;
         Method[] methods = myClass.getDeclaredMethods();
@@ -88,7 +91,7 @@ public class TestStart {
 
         return method;
     }
-
+    //Выполнение Before
     private static <myClass> void annoBeforeSuite(Class myClass, ArrayList<Method> method) {
         //
         myClass objClass = null;
@@ -107,6 +110,8 @@ public class TestStart {
 
     }
 
+    //////////////////////////////////////////////////////////////////////
+    //Сортировка Test
     private static void annoTestSort(Class myClass) {
         listTest.clear();
         Test anoTest;
@@ -122,23 +127,18 @@ public class TestStart {
                     currentList.add(o);
                 }
                 listTest.put(anoTest.priority(), currentList);
-                //System.out.println(anoTest.priority());
             }
         }
     }
-
+    //Выполнение Test
     private static <myClass> void annoTestExecute(Class myClass) {
         myClass objClass = null;
         try {
             objClass = (myClass) myClass.newInstance();
-
-            //Class myClassChablon = Class.forName(myClass.getName());
-            //Class one = myClassChablon.newInstance();
         }catch (Exception ex) {
             ex.printStackTrace();
         }
         for (Map.Entry<Integer, ArrayList<Method>> e : listTest.entrySet()){
-            //System.out.println(e.getKey() + " ");
             for (int i=0; i<e.getValue().size(); i++){
                 Method m = e.getValue().get(i);
                 try {
@@ -146,11 +146,7 @@ public class TestStart {
                 }catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                //System.out.println(e.getValue().get(i));
             };
         }
     }
-
-
-
 }
