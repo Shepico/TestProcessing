@@ -2,22 +2,22 @@ public class ClassTestTwo {
 
     @Test()
     public void testOne() {
-        System.out.println("5");
+        System.out.println("Two. test - 5");
     }
 
-    @Test(priority = 7)
+    @Test(priority = 8)
     public void testTwo() {
-        System.out.println("7");
+        System.out.println("Two. test - 8");
     }
 
     @Test(priority = 3)
     public void testThree() {
-        System.out.println("3");
+        System.out.println("Two. test - 3");
     }
 
-    @Test(priority = 5)
+    @Test(priority = 2)
     public void testFour() {
-        System.out.println("5");
+        System.out.println("Two. test - 2");
     }
 
     @AfterSuite
