@@ -1,3 +1,96 @@
+/////////////////////ШПС///////////////////////////////////////////////////////////
+// BeforeSuit
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface BeforeSuite {    }
+
+//Test
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Test {
+    int priority() default 5;
+}
+
+//AfterSuite
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.METHOD)
+  public @interface AfterSuite {    }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//Тестовые классы
+public class ClassTestOne {
+
+    @Test()
+    public void testOne() {
+        System.out.println("test - 5");
+    }
+
+    @Test(priority = 7)
+    public void testTwo() {
+        System.out.println("test - 7");
+    }
+
+    @Test(priority = 3)
+    public void testThree() {
+        System.out.println("test - 3");
+    }
+
+    @Test(priority = 5)
+    public void testFour() {
+        System.out.println("test - 5");
+    }
+
+    @AfterSuite
+    public void testAfter() {
+        System.out.println("After Suite");
+    }
+
+    @BeforeSuite
+    public void testBefore() {
+        System.out.println("Before Suite");
+    }
+
+}
+//
+public class ClassTestTwo {
+
+    @Test()
+    public void testOne() {
+        System.out.println("Two. test - 5");
+    }
+
+    @Test(priority = 8)
+    public void testTwo() {
+        System.out.println("Two. test - 8");
+    }
+
+    @Test(priority = 3)
+    public void testThree() {
+        System.out.println("Two. test - 3");
+    }
+
+    @Test(priority = 2)
+    public void testFour() {
+        System.out.println("Two. test - 2");
+    }
+
+    @AfterSuite
+    private void testAfter() {
+        System.out.println("After Suite");
+    }
+
+    @BeforeSuite
+    private void testBefore() {
+        System.out.println("Before Suite");
+    }
+
+    @AfterSuite
+    private void testAfter_2() {
+        System.out.println("After Suite");
+    }
+
+}
+///////////////////////////////////////////////////////////////////////////////////////////
+//Класс обработчик
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -52,11 +145,11 @@ public class TestStart {
         return method;
     }
     //Выполнение After
-    private static void annoAfterSuite(Class myClass, ArrayList<Method> method) {
+    private static <myClass> void annoAfterSuite(Class myClass, ArrayList<Method> method) {
 
-        Object objClass = null;
+        myClass objClass = null;
         try {
-            objClass = myClass.newInstance();
+            objClass = (myClass) myClass.newInstance();
         }catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -92,11 +185,11 @@ public class TestStart {
         return method;
     }
     //Выполнение Before
-    private static void annoBeforeSuite(Class myClass, ArrayList<Method> method) {
+    private static <myClass> void annoBeforeSuite(Class myClass, ArrayList<Method> method) {
         //
-        Object objClass = null;
+        myClass objClass = null;
         try {
-            objClass = myClass.newInstance();
+            objClass = (myClass) myClass.newInstance();
         }catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -131,10 +224,10 @@ public class TestStart {
         }
     }
     //Выполнение Test
-    private static void annoTestExecute(Class myClass) {
-        Object objClass = null;
+    private static <myClass> void annoTestExecute(Class myClass) {
+        myClass objClass = null;
         try {
-            objClass = myClass.newInstance();
+            objClass = (myClass) myClass.newInstance();
         }catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -150,3 +243,14 @@ public class TestStart {
         }
     }
 }
+//////////////////////////////////////////////////////////////////////
+//Main
+public class Main {
+
+    public static void main (String[] args) {
+        TestStart.start(ClassTestOne.class); //Объект типа класс
+        System.out.println("***********************");
+        TestStart.start("ClassTestTwo"); //Имя класса
+    }
+}
+/////////////////////////END/////////////////////////////////////////////
