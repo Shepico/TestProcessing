@@ -52,11 +52,11 @@ public class TestStart {
         return method;
     }
     //Выполнение After
-    private static <myClass> void annoAfterSuite(Class myClass, ArrayList<Method> method) {
+    private static void annoAfterSuite(Class myClass, ArrayList<Method> method) {
 
-        myClass objClass = null;
+        Object objClass = null;
         try {
-            objClass = (myClass) myClass.newInstance();
+            objClass = myClass.newInstance();
         }catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -92,11 +92,11 @@ public class TestStart {
         return method;
     }
     //Выполнение Before
-    private static <myClass> void annoBeforeSuite(Class myClass, ArrayList<Method> method) {
+    private static void annoBeforeSuite(Class myClass, ArrayList<Method> method) {
         //
-        myClass objClass = null;
+        Object objClass = null;
         try {
-            objClass = (myClass) myClass.newInstance();
+            objClass = myClass.newInstance();
         }catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -131,10 +131,10 @@ public class TestStart {
         }
     }
     //Выполнение Test
-    private static <myClass> void annoTestExecute(Class myClass) {
-        myClass objClass = null;
+    private static void annoTestExecute(Class myClass) {
+        Object objClass = null;
         try {
-            objClass = (myClass) myClass.newInstance();
+            objClass = myClass.newInstance();
         }catch (Exception ex) {
             ex.printStackTrace();
         }
